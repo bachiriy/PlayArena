@@ -45,7 +45,7 @@ This project is a **Java application** for managing video game tournaments. It i
 
 ```bash
 git clone https://github.com/bachiriy/PlayArena.git
-cd gestion-tournois-jeux-video
+cd PlayArena 
 cd app
 mvn clean install
 java -cp target/app-1.0-SNAPSHOT.jar com.playarena.app.App
