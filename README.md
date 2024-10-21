@@ -54,3 +54,4 @@ cd app
 mvn clean install
 java -cp target/app-1.0-SNAPSHOT.jar com.playarena.app.App
 ```
+
