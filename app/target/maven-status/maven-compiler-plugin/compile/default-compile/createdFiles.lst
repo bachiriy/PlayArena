@@ -1,0 +1,12 @@
+com/playarena/app/model/Tournament.class
+com/playarena/app/model/Team.class
+com/playarena/app/service/PlayerService.class
+com/playarena/app/App.class
+com/playarena/app/view/Entry.class
+com/playarena/app/model/Player.class
+com/playarena/app/repository/impl/PlayerRepositoryImpl.class
+com/playarena/app/model/Game.class
+com/playarena/app/repository/PlayerRepository.class
+com/playarena/app/util/HibernateUtil.class
+com/playarena/enums/Status.class
+com/playarena/enums/Difficulty.class

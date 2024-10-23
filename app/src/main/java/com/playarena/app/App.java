@@ -1,19 +1,27 @@
 package com.playarena.app;
 
-import java.util.Arrays;
-import java.util.List;
+
+import java.util.Scanner;
 
 import com.playarena.app.model.Player;
-import com.playarena.app.model.Team;
+import com.playarena.app.service.PlayerService;
+import com.playarena.app.view.Entry;
 
 public class App {
     public static void main(String[] args) {
-        Team team = new Team();
-        Player player1 = new Player(1L, "med");
-        Player player2 = new Player(2L, "foo");
+        System.out.println("welcome to the app: \n");
+        Player player1 = new Player("anas");
+        // Player player2 = new Player(2L, "foo");
 
-        List<Player> players = Arrays.asList(player1, player2);
-        team.setPayers(players);
-        team.getPlayers().forEach(Player::display);
+        PlayerService service = new PlayerService();
+        Long id =  service.create(player1);
+
+
+        Scanner scan = new Scanner(System.in);
+        scan.nextLine();
+
+        System.out.println(service.findById(id).getName());
+        
+
     }
 }

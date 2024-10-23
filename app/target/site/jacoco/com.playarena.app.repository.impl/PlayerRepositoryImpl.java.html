@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>PlayerRepositoryImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">playarena</a> &gt; <a href="index.source.html" class="el_package">com.playarena.app.repository.impl</a> &gt; <span class="el_source">PlayerRepositoryImpl.java</span></div><h1>PlayerRepositoryImpl.java</h1><pre class="source lang-java linenums">package com.playarena.app.repository.impl;
+
+import java.util.Optional;
+
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
+import com.playarena.app.util.HibernateUtil;
+import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import com.playarena.app.model.Player;
+import com.playarena.app.repository.PlayerRepository;
+
+<span class="nc" id="L17">public class PlayerRepositoryImpl implements PlayerRepository{</span>
+<span class="nc" id="L18">    private static final Logger log = LoggerFactory.getLogger(PlayerRepositoryImpl.class);</span>
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Override
+    public Long save(Player player) {
+<span class="nc" id="L24">        Session session = HibernateUtil.getCurrentSession();</span>
+<span class="nc" id="L25">        Transaction transaction = null;</span>
+<span class="nc" id="L26">        log.info(&quot;player saved.&quot;);</span>
+
+<span class="nc" id="L28">         Long id = null;</span>
+         try{
+<span class="nc" id="L30">             transaction = session.beginTransaction();</span>
+<span class="nc" id="L31">             id = (Long) session.save(player);</span>
+<span class="nc" id="L32">             transaction.commit();</span>
+
+
+<span class="nc" id="L35">         } catch (Exception e) {</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">             if (transaction != null) {</span>
+<span class="nc" id="L37">                 transaction.rollback();</span>
+             }
+<span class="nc" id="L39">             e.printStackTrace();</span>
+         } finally {
+<span class="nc" id="L41">             session.close();</span>
+         }
+<span class="nc" id="L43">         return id;</span>
+    }
+
+    @Override
+    public Optional&lt;Player&gt; findById(Long id) {
+<span class="nc" id="L48">        Transaction transaction = null;</span>
+<span class="nc" id="L49">        Session session = HibernateUtil.getCurrentSession();</span>
+        try {
+<span class="nc" id="L51">            transaction = session.beginTransaction();</span>
+<span class="nc" id="L52">            Player player = session.find(Player.class, id);</span>
+<span class="nc" id="L53">            transaction.commit();</span>
+<span class="nc" id="L54">            return Optional.ofNullable(player);</span>
+<span class="nc" id="L55">        } catch (Exception e) {</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">            if (transaction != null) {</span>
+<span class="nc" id="L57">                transaction.rollback();</span>
+            }
+<span class="nc" id="L59">            e.printStackTrace();</span>
+<span class="nc" id="L60">            return Optional.empty();</span>
+        } finally {
+<span class="nc" id="L62">            session.close();</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

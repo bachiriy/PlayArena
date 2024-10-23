@@ -50,7 +50,7 @@
             <scope>test</scope>
         </dependency>
 
-          <!-- SLF4J API -->
+        <!-- SLF4J API -->
         <dependency>
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
@@ -161,15 +161,6 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>exec-maven-plugin</artifactId>
-              <version>3.0.0</version>
-              <configuration>
-                  <mainClass>com.playarena.app.App</mainClass> 
-              </configuration>
-          </plugin>
 
         </plugins>
     </build>
