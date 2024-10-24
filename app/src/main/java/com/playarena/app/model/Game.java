@@ -2,10 +2,22 @@ package com.playarena.app.model;
 
 import com.playarena.enums.Difficulty;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "games")
 public class Game {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false, unique = true)
     private String name;
+
+    @Column(nullable = false)
     private Difficulty difficulty;
+
+    @Column(nullable = false)
     private int averageMatchDuration;
 
     public Game(){

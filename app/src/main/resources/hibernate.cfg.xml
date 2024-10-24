@@ -20,12 +20,12 @@
         <property name="hibernate.show_sql">true</property>
 
         <!-- Drop and re-create the database schema on startup -->
-        <property name="hibernate.hbm2ddl.auto">update</property>
+        <property name="hibernate.hbm2ddl.auto">create-drop</property>
 
         <!-- Mapped classes -->
         <mapping class="com.playarena.app.model.Player"/>
-<!--        <mapping class="com.playarena.app.model.Game"/>-->
-<!--        <mapping class="com.playarena.app.model.Team"/>-->
-<!--        <mapping class="com.playarena.app.model.Tournament"/>-->
+        <mapping class="com.playarena.app.model.Game"/>
+        <mapping class="com.playarena.app.model.Team"/>
+        <mapping class="com.playarena.app.model.Tournament"/>
     </session-factory>
 </hibernate-configuration>
