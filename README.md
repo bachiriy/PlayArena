@@ -48,19 +48,22 @@ git clone https://github.com/bachiriy/PlayArena.git
 cd PlayArena 
 ```
 
-### Run the App
+### Configure and Run the App
 ```bash
    cd app
-   mvn clean install
-   java -cp target/app-1.0-SNAPSHOT.jar com.playarena.app.App
+   mvn dependency:build-classpath -Dmdep.outputFile=classpath.txt
+   mvn clean package 
+   java -cp $(cat classpath.txt):target/ctarget/playarena-1.0-SNAPSHOT.jar com.playarena.app.App
 ```
-- or simpley change dir app path in run.sh and run:
+- or simpley run the script:
 ```bash
    ./run.sh
 ```
-> **Note:** if you don't have the classpath.txt included, you can't run the app. to generate it run the following command(in app/) and re run the app:
+> **Note:** You have to change the path to the cloned project app before so you can run the script without erros:
 ```bash
-   mvn dependency:build-classpath -Dmdep.outputFile=classpath.txt
+# Full path to the cloned project app
+PROJECT_DIR="/cloned_location/PlayArena/app"
+...
 ```
 ### Jira
 https://mohammedelbachiri945.atlassian.net/jira/software/projects/PLAYAR/boards/35
