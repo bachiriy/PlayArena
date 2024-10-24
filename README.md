@@ -58,7 +58,10 @@ cd PlayArena
 ```bash
    ./run.sh
 ```
-
+> **Note:** if you don't have the classpath.txt included, you can't run the app. to generate it run the following command(in app/) and re run the app:
+```bash
+   mvn dependency:build-classpath -Dmdep.outputFile=classpath.txt
+```
 ### Jira
 https://mohammedelbachiri945.atlassian.net/jira/software/projects/PLAYAR/boards/35
 

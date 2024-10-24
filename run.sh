@@ -1,8 +1,9 @@
 #!/bin/bash
 
-PROJECT_DIR="/home/exshy/Documents/GitHub/PlayArena/app/"
+# change with the full path to the cloned project app
+PROJECT_DIR="/home/username/Documents/GitHub/PlayArena/app"
 
-JAR_PATH="/home/exshy/Documents/GitHub/PlayArena/app/target/app-1.0-SNAPSHOT.jar"
+JAR_PATH="$PROJECT_DIR/target/playarena-1.0-SNAPSHOT.jar"
 
 build_project() {
     echo "Building the project..."
@@ -17,8 +18,9 @@ build_project() {
 
 run_app() {
     echo "Running app..."
-    clear && cd "$PROJECT_DIR" ; /usr/bin/env /usr/lib/jvm/java-8-openjdk-amd64/jre/bin/java -cp /tmp/cp_b3xylhpdieot8yir5rmhmyqyw.jar com.playarena.app.App
-    echo "End app."
+    java -cp $(cat "$PROJECT_DIR/classpath.txt"):"$JAR_PATH" com.playarena.app.App
 }
+
 build_project
 run_app
+
