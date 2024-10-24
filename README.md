@@ -50,8 +50,17 @@ cd PlayArena
 
 ### Run the App
 ```bash
-cd app
-mvn clean install
-java -cp target/app-1.0-SNAPSHOT.jar com.playarena.app.App
+   cd app
+   mvn clean install
+   java -cp target/app-1.0-SNAPSHOT.jar com.playarena.app.App
+```
+- or simpley change dir app path in run.sh and run:
+```bash
+   ./run.sh
 ```
 
+### Jira
+https://mohammedelbachiri945.atlassian.net/jira/software/projects/PLAYAR/boards/35
+
+--- 
+enjoy ^^
