@@ -10,7 +10,7 @@ import com.playarena.app.view.Entry;
 public class App {
     public static void main(String[] args) {
         System.out.println("welcome to the app: \n");
-        Player player1 = new Player("anas");
+        Player player1 = new Player("test");
         // Player player2 = new Player(2L, "foo");
 
         PlayerService service = new PlayerService();
