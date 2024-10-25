@@ -1,6 +1,6 @@
 package com.playarena.app.model;
 
-import com.playarena.enums.Difficulty;
+import com.playarena.app.enums.Difficulty;
 
 import javax.persistence.*;
 
@@ -11,17 +11,13 @@ public class Game {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true)
     private String name;
 
-    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    @Column(nullable = false)
     private int averageMatchDuration;
-
     public Game(){
-
     }
 
     public Game(Long id, String name, Difficulty difficulty, int averageMatchDuration){
@@ -37,14 +33,36 @@ public class Game {
         this.averageMatchDuration = averageMatchDuration;
     }
 
-    public void setId(Long id){this.id = id;}
-    public void setName(String name){this.name = name;}
-    public void setDifficulty(Difficulty difficulty){this.difficulty = difficulty;}
-    public void setAverageMatchDuration(int averageMatchDuration){this.averageMatchDuration = averageMatchDuration;}
+    // Getters and setters
+    public Long getId() {
+        return id;
+    }
 
-    public Long getId(){return this.id;}
-    public String getName(){return this.name;}
-    public Difficulty getDifficulty(){return this.difficulty;}
-    public int getAverageMatchDuration(){return this.averageMatchDuration;}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Difficulty getDifficulty() {
+        return difficulty;
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+        this.difficulty = difficulty;
+    }
+
+    public int getAverageMatchDuration() {
+        return averageMatchDuration;
+    }
+
+    public void setAverageMatchDuration(int averageMatchDuration) {
+        this.averageMatchDuration = averageMatchDuration;
+    }
 }

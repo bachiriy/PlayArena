@@ -1,0 +1,21 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                           http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- SessionFactory bean, linked to hibernate.cfg.xml -->
+    <bean id="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+        <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+    </bean>
+
+    <!-- Repository implementation bean with constructor-based DI -->
+    <bean id="playerRepository" class="com.playarena.app.repository.impl.PlayerRepositoryImpl">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
+    <!-- Service bean with Repository injection -->
+    <bean id="playerService" class="com.playarena.app.service.PlayerService">
+        <constructor-arg ref="playerRepository"/>
+    </bean>
+
+</beans>

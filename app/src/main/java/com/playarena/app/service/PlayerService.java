@@ -2,21 +2,26 @@ package com.playarena.app.service;
 
 import com.playarena.app.model.Player;
 import com.playarena.app.repository.PlayerRepository;
-import com.playarena.app.repository.impl.PlayerRepositoryImpl;
+
+import java.util.List;
 
 public class PlayerService {
 
-    private PlayerRepositoryImpl repository;
+    private final PlayerRepository playerRepository;
 
-    public PlayerService(){
-        repository = new PlayerRepositoryImpl();
+    public PlayerService(PlayerRepository playerRepository) {
+        this.playerRepository = playerRepository;
     }
 
     public Long create(Player player){
-        return repository.save(player);
+        return playerRepository.add(player);
     }
 
     public Player findById(Long id){
-        return repository.findById(id).orElseGet(Player::new);
+        return playerRepository.get(id).orElseGet(Player::new);
+    }
+
+    public List<Player> findAll(){
+        return null;
     }
 }

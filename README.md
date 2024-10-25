@@ -65,6 +65,13 @@ cd PlayArena
 PROJECT_DIR="/cloned_location/PlayArena/app"
 ...
 ```
+
+> **Note:** Also notice that you must run the H2 tcp server for the app operations with database, can be run with the command:
+```bash
+   cd ~/.m2/repository/com/h2database/h2/1.4.200/
+   java -cp h2-1.4.200.jar org.h2.tools.Server -tcp
+```
+
 ### Jira
 https://mohammedelbachiri945.atlassian.net/jira/software/projects/PLAYAR/boards/35
 

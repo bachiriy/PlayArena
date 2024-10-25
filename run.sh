@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Full path to the cloned project app
-PROJECT_DIR="/home/usr/Documents/GitHub/PlayArena/app"
+PROJECT_DIR="/home/exshy/Documents/GitHub/PlayArena/app"
 JAR_PATH="$PROJECT_DIR/target/playarena-1.0-SNAPSHOT.jar"
 CLASSPATH_FILE="$PROJECT_DIR/classpath.txt"
 
@@ -11,6 +11,7 @@ clean_project() {
 }
 
 build_project() {
+    clear
     echo "Building the project..."
     cd "$PROJECT_DIR" || exit
     clean_project
@@ -19,6 +20,7 @@ build_project() {
 }
 
 run_app() {
+    clear
     echo "Running app..."
     mvn dependency:build-classpath -Dmdep.outputFile="$CLASSPATH_FILE"
     java -cp "$(cat "$CLASSPATH_FILE")":"$JAR_PATH" com.playarena.app.App

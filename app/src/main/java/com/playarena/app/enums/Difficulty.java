@@ -1,8 +1,7 @@
-package com.playarena.enums;
+package com.playarena.app.enums;
 
 public enum Difficulty {
     EASY,
     MEDIUM,
-    HARD,
-    EXPERT
+    HARD
 }
