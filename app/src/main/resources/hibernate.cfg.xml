@@ -1,4 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE hibernate-configuration PUBLIC
         "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
         "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
@@ -6,26 +5,19 @@
     <session-factory>
         <!-- Database connection settings -->
         <property name="hibernate.connection.driver_class">org.h2.Driver</property>
-        <property name="hibernate.connection.url">jdbc:h2:~/test</property>
+        <property name="hibernate.connection.url">jdbc:h2:tcp://localhost:9092/~/playarena</property>
         <property name="hibernate.connection.username">sa</property>
         <property name="hibernate.connection.password"></property>
 
-        <!-- Specify dialect -->
+        <!-- Hibernate properties -->
         <property name="hibernate.dialect">org.hibernate.dialect.H2Dialect</property>
-
-        <!-- Enable Hibernate's automatic session context management -->
-        <property name="hibernate.current_session_context_class">thread</property>
-
-        <!-- Echo all executed SQL to stdout -->
+        <property name="hibernate.hbm2ddl.auto">create</property>
         <property name="hibernate.show_sql">true</property>
 
-        <!-- Drop and re-create the database schema on startup -->
-        <property name="hibernate.hbm2ddl.auto">create-drop</property>
-
-        <!-- Mapped classes -->
+        <!-- Mapped Entity classes -->
         <mapping class="com.playarena.app.model.Player"/>
         <mapping class="com.playarena.app.model.Game"/>
-        <mapping class="com.playarena.app.model.Team"/>
         <mapping class="com.playarena.app.model.Tournament"/>
+        <mapping class="com.playarena.app.model.Team"/>
     </session-factory>
 </hibernate-configuration>
