@@ -8,14 +8,20 @@
         <property name="configLocation" value="classpath:hibernate.cfg.xml"/>
     </bean>
 
-    <!-- Repository implementation bean with constructor-based DI -->
+    <!-- repos-->
     <bean id="playerRepository" class="com.playarena.app.repository.impl.PlayerRepositoryImpl">
         <constructor-arg ref="sessionFactory"/>
     </bean>
+    <bean id="teamRepository" class="com.playarena.app.repository.impl.TeamRepositoryImpl">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
 
-    <!-- Service bean with Repository injection -->
+    <!-- services-->
     <bean id="playerService" class="com.playarena.app.service.PlayerService">
         <constructor-arg ref="playerRepository"/>
+    </bean>
+    <bean id="teamService" class="com.playarena.app.service.TeamService">
+        <constructor-arg ref="teamRepository"/>
     </bean>
 
 </beans>

@@ -4,6 +4,8 @@ import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 import com.playarena.app.model.Team;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 @Entity
 @Table(name = "players")
@@ -14,14 +16,16 @@ public class Player {
 
     private String username;
 
-    @ManyToMany(mappedBy = "players", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Team> teams = new HashSet<>();
+    @ManyToOne()
+    @JoinColumn(name="team_id", nullable=true)
+    private Team team;
 
     public Player(){
     }
 
-    public Player(String username){
+    public Player(String username) {
         this.username = username;
+//        this.team = team;
     }
 
     // Getters and setters
@@ -41,11 +45,16 @@ public class Player {
         this.username = username;
     }
 
-    public Set<Team> getTeams() {
-        return teams;
+    public Team getTeam() {
+        return team;
     }
 
-    public void setTeams(Set<Team> teams) {
-        this.teams = teams;
+    public void setTeam(Team team) {
+        this.team = team;
+    }
+    public void display(){
+        System.out.println(
+                "Player - ID: " + id + " | Username: " + username   + " | Team: " + (team == null ? "No Team" : team.getName()) + "\n"
+        );
     }
 }

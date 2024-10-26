@@ -5,6 +5,8 @@ import com.playarena.app.enums.Status;
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+
 import com.playarena.app.model.Game;
 import com.playarena.app.model.Team;
 
@@ -18,15 +20,15 @@ public class Tournament {
     private String title;
 
     @ManyToOne
-    @JoinColumn(name = "game_id") // Foreign key to Game
     private Game game;
 
     private Date startDate;
     private Date endDate;
     private int spectatorsCount;
 
-    @OneToMany(mappedBy = "tournaments", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Team> teams;
+//    @ManyToMany(mappedBy = "tournaments")
+//    @JoinColumn(name="team_id", nullable=false)
+//    private Set<Team> teams;
 
     private int estimatedDuration;
     private int matchPauseTime;
@@ -83,14 +85,14 @@ public class Tournament {
     public void setSpectatorsCount(int spectatorsCount) {
         this.spectatorsCount = spectatorsCount;
     }
-
-    public List<Team> getTeams() {
-        return teams;
-    }
-
-    public void setTeams(List<Team> teams) {
-        this.teams = teams;
-    }
+//
+//    public Set<Team> getTeams() {
+//        return teams;
+//    }
+//
+//    public void setTeams(Set<Team> teams) {
+//        this.teams = teams;
+//    }
 
     public int getEstimatedDuration() {
         return estimatedDuration;

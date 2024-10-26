@@ -1,10 +1,8 @@
 package com.playarena.app.repository.impl;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
+import com.playarena.app.repository.Repository;
 import org.hibernate.HibernateException;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -16,9 +14,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.playarena.app.model.Player;
-import com.playarena.app.repository.PlayerRepository;
 
-public class PlayerRepositoryImpl implements PlayerRepository {
+public class PlayerRepositoryImpl implements Repository<Player> {
     private static final Logger log = LoggerFactory.getLogger(PlayerRepositoryImpl.class);
 
     private final SessionFactory sessionFactory;
@@ -28,11 +25,11 @@ public class PlayerRepositoryImpl implements PlayerRepository {
     }
 
 
-    public List<Player> getAll() {
-        List<Player> players = new ArrayList<>();
+    public Set<Player> getAll() {
+        Set<Player> players = new HashSet<Player>();
         try (Session session = sessionFactory.openSession()) {
             Query<Player> query = session.createQuery("FROM Player", Player.class);
-            players = query.getResultList();
+            players.addAll(query.getResultList());
             log.info("[+] Retrieved {} players from the database", players.size());
         } catch (HibernateException e) {
             log.error("[-] Hibernate error while retrieving all players: {}", e.getMessage());
@@ -43,15 +40,16 @@ public class PlayerRepositoryImpl implements PlayerRepository {
     }
 
     @Override
-    public Long add(Player player) {
+    public Player add(Player player) {
         try{
             Session session = sessionFactory.openSession();
             Transaction tx = session.beginTransaction();
             Long id = (Long) session.save(player);
+            player.setId(id);
             tx.commit();
             session.close();
             log.info("[+] player created with id {}", id);
-            return id;
+            return player;
         } catch (ConstraintViolationException e) {
             log.error("[-] player maybe already exists (" + e.getMessage().toUpperCase() + ")" );
         }
@@ -82,7 +80,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
             session.close();
             log.info("[+] player removed with id {}", player.getId());
         } catch (Exception e) {
-            log.error(e.getMessage().toUpperCase());
+            log.error("[-] Failed removing player, {}", e.getMessage().toUpperCase());
         }
     }
 
@@ -96,7 +94,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
             session.close();
             log.info("[+] player updated with id {}", player.getId());
         } catch (Exception e) {
-            log.error(e.getMessage().toUpperCase());
+            log.error("[-] Failed updating player, {}", e.getMessage().toUpperCase());
         }
     }
 }

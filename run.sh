@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Full path to the cloned project app
-PROJECT_DIR="/home/user/Documents/GitHub/PlayArena/app"
+PROJECT_DIR="/home/usr/Documents/GitHub/PlayArena/app"
 JAR_PATH="$PROJECT_DIR/target/playarena-1.0-SNAPSHOT.jar"
 CLASSPATH_FILE="$PROJECT_DIR/classpath.txt"
 
