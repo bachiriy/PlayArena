@@ -95,6 +95,22 @@ public class InputValidator {
             } else logger.warn("[-] Choice must be one of the following (SCHEDULED, IN_PROGRESS, DONE, CANCELED),\n Note: case ignored.");
         }
     }
+    public <E extends Enum<E>> E getEnum(String message, Class<E> enumClass) {
+        E[] enumConstants = enumClass.getEnumConstants();
+        while (true) {
+            String input = getStr(message).toUpperCase();
+            Optional<E> matchedEnum = Arrays.stream(enumConstants)
+                    .filter(enumConstant -> enumConstant.name().equals(input))
+                    .findFirst();
+
+            if (matchedEnum.isPresent()) {
+                return matchedEnum.get();
+            } else {
+                logger.warn("[-] Choice must be one of the following: {}", Arrays.toString(enumConstants));
+            }
+        }
+    }
+
     public void cleanBuffer(){
         scan.nextLine();
     }

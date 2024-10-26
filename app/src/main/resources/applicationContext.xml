@@ -15,6 +15,10 @@
     <bean id="teamRepository" class="com.playarena.app.repository.impl.TeamRepositoryImpl">
         <constructor-arg ref="sessionFactory"/>
     </bean>
+    <bean id="gameRepository" class="com.playarena.app.repository.impl.GameRepositoryImpl">
+        <constructor-arg ref="sessionFactory"/>
+    </bean>
+
 
     <!-- services-->
     <bean id="playerService" class="com.playarena.app.service.PlayerService">
@@ -23,5 +27,7 @@
     <bean id="teamService" class="com.playarena.app.service.TeamService">
         <constructor-arg ref="teamRepository"/>
     </bean>
-
+    <bean id="gameService" class="com.playarena.app.service.GameService">
+        <constructor-arg ref="gameRepository"/>
+    </bean>
 </beans>

@@ -65,4 +65,10 @@ public class Game {
     public void setAverageMatchDuration(int averageMatchDuration) {
         this.averageMatchDuration = averageMatchDuration;
     }
+
+    public void display(){
+        System.out.println(
+                "Game - ID: " + id + " | Name: " + name + " | Difficulty: " + difficulty.toString() + " | AverageMatchDuration: " + averageMatchDuration + "\n"
+        );
+    }
 }
