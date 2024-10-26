@@ -8,8 +8,7 @@ import org.slf4j.LoggerFactory;
 import java.util.Set;
 
 public class PlayerService {
-    private static final Logger log = LoggerFactory.getLogger(PlayerService.class);
-
+    private final Logger log = LoggerFactory.getLogger(PlayerService.class);
 
     private final Repository<Player> playerRepository;
 

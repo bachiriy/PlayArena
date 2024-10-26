@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TeamRepositoryImpl.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">playarena</a> &gt; <a href="index.source.html" class="el_package">com.playarena.app.repository.impl</a> &gt; <span class="el_source">TeamRepositoryImpl.java</span></div><h1>TeamRepositoryImpl.java</h1><pre class="source lang-java linenums">package com.playarena.app.repository.impl;
+
+import com.playarena.app.model.Team;
+import com.playarena.app.repository.Repository;
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
+import org.hibernate.exception.ConstraintViolationException;
+import org.hibernate.query.Query;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.*;
+
+public class TeamRepositoryImpl implements Repository&lt;Team&gt; {
+<span class="nc" id="L17">    private static final Logger log = LoggerFactory.getLogger(TeamRepositoryImpl.class);</span>
+
+    private final SessionFactory sessionFactory;
+
+<span class="nc" id="L21">    public TeamRepositoryImpl(SessionFactory sessionFactory) {</span>
+<span class="nc" id="L22">        this.sessionFactory = sessionFactory;</span>
+<span class="nc" id="L23">    }</span>
+
+    @Override
+    public Set&lt;Team&gt; getAll() {
+<span class="nc" id="L27">        Set&lt;Team&gt; teams = new HashSet&lt;Team&gt;();</span>
+<span class="nc" id="L28">        try (Session session = sessionFactory.openSession()) {</span>
+<span class="nc" id="L29">            Query&lt;Team&gt; query = session.createQuery(&quot;FROM Team &quot;, Team.class);</span>
+<span class="nc" id="L30">            teams.addAll(query.getResultList());</span>
+<span class="nc" id="L31">            log.info(&quot;[+] Retrieved {} teams from the database&quot;, teams.size());</span>
+<span class="nc" id="L32">        } catch (HibernateException e) {</span>
+<span class="nc" id="L33">            log.error(&quot;[-] Hibernate error while retrieving all teams: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L34">        } catch (Exception e) {</span>
+<span class="nc" id="L35">            log.error(&quot;[-] Unexpected error while retrieving all teams: {}&quot;, e.getMessage());</span>
+<span class="nc" id="L36">        }</span>
+<span class="nc" id="L37">        return teams;</span>
+    }
+
+    @Override
+    public Optional&lt;Team&gt; get(Long id) {
+        try{
+<span class="nc" id="L43">            Session session = sessionFactory.openSession();</span>
+<span class="nc" id="L44">            Team team = session.get(Team.class, id);</span>
+<span class="nc" id="L45">            session.close();</span>
+<span class="nc" id="L46">            log.info(&quot;[+] team retrieved with id {}&quot;, id);</span>
+<span class="nc" id="L47">            return Optional.ofNullable(team);</span>
+<span class="nc" id="L48">        } catch (Exception e) {</span>
+<span class="nc" id="L49">            log.error(e.getMessage().toUpperCase());</span>
+        }
+<span class="nc" id="L51">        return Optional.empty();</span>
+    }
+
+    @Override
+    public Team add(Team team) {
+<span class="nc" id="L56">        Transaction tx = null;</span>
+        try{
+<span class="nc" id="L58">            Session session = sessionFactory.openSession();</span>
+<span class="nc" id="L59">            tx = session.beginTransaction();</span>
+<span class="nc" id="L60">            Long id = (Long) session.save(team);</span>
+<span class="nc" id="L61">            team.setId(id);</span>
+<span class="nc" id="L62">            tx.commit();</span>
+<span class="nc" id="L63">            session.close();</span>
+<span class="nc" id="L64">            log.info(&quot;[+] team created with id&quot;);</span>
+<span class="nc" id="L65">            return team;</span>
+<span class="nc" id="L66">        } catch (ConstraintViolationException e) {</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">            assert tx != null;</span>
+<span class="nc" id="L68">            tx.rollback();</span>
+<span class="nc" id="L69">            log.error(&quot;[-] team may already exist ({})&quot;, e.getMessage().toUpperCase());</span>
+        }
+<span class="nc" id="L71">        return null;</span>
+    }
+
+    @Override
+    public void remove(Team team) {
+        try{
+<span class="nc" id="L77">            Session session = sessionFactory.openSession();</span>
+<span class="nc" id="L78">            Transaction tx = session.beginTransaction();</span>
+<span class="nc" id="L79">            Team foundTeam = session.find(Team.class, team.getId());</span>
+<span class="nc bnc" id="L80" title="All 2 branches missed.">            if (foundTeam != null) {</span>
+<span class="nc" id="L81">                session.delete(foundTeam);</span>
+<span class="nc" id="L82">                tx.commit();</span>
+<span class="nc" id="L83">                session.close();</span>
+<span class="nc" id="L84">                log.info(&quot;[+] team removed with id {}&quot;, team.getId());</span>
+            }
+<span class="nc" id="L86">        } catch (Exception e) {</span>
+<span class="nc" id="L87">            log.error(&quot;Failed removing team wit ID {}, {}&quot;, team.getId(), e.getMessage().toUpperCase());</span>
+<span class="nc" id="L88">        }</span>
+<span class="nc" id="L89">    }</span>
+
+    @Override
+    public void update(Team team) {
+        try{
+<span class="nc" id="L94">            Session session = sessionFactory.openSession();</span>
+<span class="nc" id="L95">            Transaction tx = session.beginTransaction();</span>
+<span class="nc" id="L96">            session.update(team);</span>
+<span class="nc" id="L97">            tx.commit();</span>
+<span class="nc" id="L98">            session.close();</span>
+<span class="nc" id="L99">            log.info(&quot;[+] team updated with id {}&quot;, team.getId());</span>
+<span class="nc" id="L100">        } catch (Exception e) {</span>
+<span class="nc" id="L101">            log.error(e.getMessage().toUpperCase());</span>
+<span class="nc" id="L102">        }</span>
+<span class="nc" id="L103">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

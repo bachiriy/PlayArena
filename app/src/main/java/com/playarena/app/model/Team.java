@@ -1,7 +1,6 @@
 package com.playarena.app.model;
 
 import javax.persistence.*;
-import java.util.HashSet;
 import java.util.Set;
 import com.playarena.app.model.Tournament;
 import org.hibernate.annotations.OnDelete;
@@ -25,8 +24,8 @@ public class Team {
     @OnDelete(action= OnDeleteAction.CASCADE)
     private Set<Player> players;
 
-//    @ManyToMany(mappedBy = "teams")
-//    private Set<Tournament> tournaments;
+    @ManyToMany(mappedBy = "teams")
+    private Set<Tournament> tournaments;
 
     // Getters and setters
     public Team() {
@@ -61,13 +60,13 @@ public class Team {
         this.players = players;
     }
 
-//    public Set<Tournament> getTournaments() {
-//        return tournaments;
-//    }
-//
-//    public void setTournaments(Set<Tournament> tournaments) {
-//        this.tournaments = tournaments;
-//    }
+    public Set<Tournament> getTournaments() {
+        return tournaments;
+    }
+
+    public void setTournaments(Set<Tournament> tournaments) {
+        this.tournaments = tournaments;
+    }
 
     public void display(){
         System.out.println("\n\tTeam - ID: " + id + " | Name: " + name + " | Players("+ (players == null ? 0 : players.size()) +") -> \n");

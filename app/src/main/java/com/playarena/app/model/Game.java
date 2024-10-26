@@ -17,6 +17,10 @@ public class Game {
     private Difficulty difficulty;
 
     private int averageMatchDuration;
+
+    @OneToOne(mappedBy = "game")
+    private Tournament tournament;
+
     public Game(){
     }
 

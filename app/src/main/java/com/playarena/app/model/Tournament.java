@@ -19,16 +19,21 @@ public class Tournament {
 
     private String title;
 
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "game_id", referencedColumnName = "id")
     private Game game;
 
     private Date startDate;
     private Date endDate;
     private int spectatorsCount;
 
-//    @ManyToMany(mappedBy = "tournaments")
-//    @JoinColumn(name="team_id", nullable=false)
-//    private Set<Team> teams;
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "Tournament_Team",
+            joinColumns = { @JoinColumn(name = "tournament_id") },
+            inverseJoinColumns = { @JoinColumn(name = "team_id") }
+    )
+    private Set<Team> teams;
 
     private int estimatedDuration;
     private int matchPauseTime;
@@ -36,6 +41,21 @@ public class Tournament {
 
     @Enumerated(EnumType.STRING)
     private Status status;
+
+    public Tournament(){
+
+    }
+
+    public Tournament(String title, Date startDate, Date endDate, int spectatorsCount, int estimatedDuration, int matchPauseTime, int ceremonyTime, Status status) {
+        this.title = title;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.spectatorsCount = spectatorsCount;
+        this.estimatedDuration = estimatedDuration;
+        this.matchPauseTime = matchPauseTime;
+        this.ceremonyTime = ceremonyTime;
+        this.status = status;
+    }
 
     // Getters and setters
     public Long getId() {
@@ -85,14 +105,14 @@ public class Tournament {
     public void setSpectatorsCount(int spectatorsCount) {
         this.spectatorsCount = spectatorsCount;
     }
-//
-//    public Set<Team> getTeams() {
-//        return teams;
-//    }
-//
-//    public void setTeams(Set<Team> teams) {
-//        this.teams = teams;
-//    }
+
+    public Set<Team> getTeams() {
+        return teams;
+    }
+
+    public void setTeams(Set<Team> teams) {
+        this.teams = teams;
+    }
 
     public int getEstimatedDuration() {
         return estimatedDuration;
@@ -124,5 +144,15 @@ public class Tournament {
 
     public void setStatus(Status status) {
         this.status = status;
+    }
+
+    public void display(){
+        System.out.println("\n\t\tGame: " + game);
+        System.out.println(
+                "\n\tTournament - ID: " + id + " | Title: " + title + " | Start: " + startDate + " | End: " + endDate + " | Estimated Duration: " + estimatedDuration + " | Match Pause Time: " + matchPauseTime + " | Ceremony Time: " + ceremonyTime + " | Status: " + status + "\n"
+        );
+        if (teams != null){
+            teams.forEach(Team::display);
+        }
     }
 }

@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GameView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">playarena</a> &gt; <a href="index.source.html" class="el_package">com.playarena.app.view</a> &gt; <span class="el_source">GameView.java</span></div><h1>GameView.java</h1><pre class="source lang-java linenums">package com.playarena.app.view;
+
+import com.playarena.app.enums.Difficulty;
+import com.playarena.app.model.Game;
+import com.playarena.app.service.GameService;
+import com.playarena.app.util.InputValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+
+<span class="nc" id="L11">public class GameView {</span>
+<span class="nc" id="L12">    private static final Logger log = LoggerFactory.getLogger(GameView.class);</span>
+<span class="nc" id="L13">    private static InputValidator input = new InputValidator();</span>
+    private static GameService gameService;
+
+    public static void display(ApplicationContext context) {
+<span class="nc" id="L17">        gameService = (GameService) context.getBean(&quot;gameService&quot;);</span>
+
+<span class="nc" id="L19">        System.out.println(menu());</span>
+<span class="nc" id="L20">        int choice = input.getNum(&quot;Enter your choice&quot;);</span>
+
+<span class="nc bnc" id="L22" title="All 6 branches missed.">        switch (choice) {</span>
+            case 1:
+<span class="nc" id="L24">                Game game = getGame();</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">                if (gameService.addGame(game) != null) {</span>
+<span class="nc" id="L26">                    log.info(&quot;[+] Game added successfully.&quot;);</span>
+                } else {
+<span class="nc" id="L28">                    log.error(&quot;[-] Game already exists or could not be added.&quot;);</span>
+                }
+<span class="nc" id="L30">                break;</span>
+            case 2:
+<span class="nc" id="L32">                gameService.getAllGames().forEach(Game::display);</span>
+<span class="nc" id="L33">                break;</span>
+            case 3:
+<span class="nc" id="L35">                updateGame();</span>
+<span class="nc" id="L36">                break;</span>
+            case 4:
+<span class="nc" id="L38">                removeGame();</span>
+<span class="nc" id="L39">                break;</span>
+            case 5:
+<span class="nc" id="L41">                log.info(&quot;Exiting Game Menu.&quot;);</span>
+<span class="nc" id="L42">                return;</span>
+            default:
+<span class="nc" id="L44">                log.warn(&quot;Invalid choice, please try again.&quot;);</span>
+<span class="nc" id="L45">                display(context);</span>
+                break;
+        }
+<span class="nc" id="L48">    }</span>
+
+    private static Game getGame() {
+<span class="nc" id="L51">        String name = input.getStr(&quot;Game Name&quot;);</span>
+<span class="nc" id="L52">        Difficulty difficulty = input.getEnum(&quot;Difficulty (EASY, MEDIUM, HARD)&quot;, Difficulty.class);</span>
+<span class="nc" id="L53">        int duration = input.getNum(&quot;Average Match Duration&quot;);</span>
+<span class="nc" id="L54">        return new Game(name, difficulty, duration);</span>
+    }
+
+    private static void updateGame() {
+<span class="nc" id="L58">        long gameId = input.getNum(&quot;Enter Game ID to update&quot;);</span>
+<span class="nc" id="L59">        input.cleanBuffer();</span>
+<span class="nc" id="L60">        Game game = getGame();</span>
+<span class="nc" id="L61">        game.setId(gameId);</span>
+<span class="nc" id="L62">        gameService.updateGame(game);</span>
+<span class="nc" id="L63">    }</span>
+
+    private static void removeGame() {
+<span class="nc" id="L66">        long gameId = input.getNum(&quot;Enter Game ID to remove&quot;);</span>
+<span class="nc" id="L67">        Game game = new Game();</span>
+<span class="nc" id="L68">        game.setId(gameId);</span>
+<span class="nc" id="L69">        gameService.removeGame(game);</span>
+<span class="nc" id="L70">    }</span>
+
+    private static String menu() {
+<span class="nc" id="L73">        return</span>
+                &quot;\t\t-- Game Menu --\n&quot; +
+                        &quot;\t1. Add Game\n&quot; +
+                        &quot;\t2. View Games\n&quot; +
+                        &quot;\t3. Update Game\n&quot; +
+                        &quot;\t4. Remove Game\n&quot; +
+                        &quot;\t5. Exit\n&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TeamView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">playarena</a> &gt; <a href="index.source.html" class="el_package">com.playarena.app.view</a> &gt; <span class="el_source">TeamView.java</span></div><h1>TeamView.java</h1><pre class="source lang-java linenums">package com.playarena.app.view;
+
+import com.playarena.app.model.Team;
+import com.playarena.app.service.TeamService;
+import com.playarena.app.util.InputValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+
+<span class="nc" id="L10">public class TeamView {</span>
+<span class="nc" id="L11">    private static final Logger log = LoggerFactory.getLogger(TeamView.class);</span>
+<span class="nc" id="L12">    private static InputValidator input = new InputValidator();</span>
+    private static TeamService teamService;
+
+    public static void display(ApplicationContext context){
+<span class="nc" id="L16">        teamService = (TeamService) context.getBean(&quot;teamService&quot;);</span>
+
+        while (true) {
+<span class="nc" id="L19">            System.out.println(menu());</span>
+<span class="nc" id="L20">            int choice = input.getNum(&quot;Enter your choice&quot;);</span>
+
+<span class="nc bnc" id="L22" title="All 6 branches missed.">            switch (choice) {</span>
+                case 1:
+<span class="nc" id="L24">                    Team team = teamService.addTeam(getTeam());</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">                    if (team != null) team.display(); else log.error(&quot;Team already exists.&quot;);</span>
+<span class="nc" id="L26">                    break;</span>
+                case 2:
+<span class="nc" id="L28">                    teamService.getAllTeams().forEach(Team::display);</span>
+<span class="nc" id="L29">                    break;</span>
+                case 3:
+<span class="nc" id="L31">                    updateTeam();</span>
+<span class="nc" id="L32">                    break;</span>
+                case 4:
+<span class="nc" id="L34">                    removeTeam();</span>
+<span class="nc" id="L35">                    break;</span>
+                case 5:
+<span class="nc" id="L37">                    log.info(&quot;Exiting Team Menu.&quot;);</span>
+<span class="nc" id="L38">                    return;</span>
+                default:
+<span class="nc" id="L40">                    log.warn(&quot;Invalid choice, please try again.&quot;);</span>
+                    break;
+            }
+<span class="nc" id="L43">        }</span>
+    }
+
+    private static Team getTeam() {
+<span class="nc" id="L47">        String teamName = input.getStr(&quot;Team Name&quot;);</span>
+<span class="nc" id="L48">        Team team = new Team();</span>
+<span class="nc" id="L49">        team.setName(teamName);</span>
+<span class="nc" id="L50">        return team;</span>
+    }
+
+    private static void updateTeam() {
+<span class="nc" id="L54">        long teamId = input.getNum(&quot;Enter Team ID to update&quot;);</span>
+<span class="nc" id="L55">        input.cleanBuffer();</span>
+<span class="nc" id="L56">        String newName = input.getStr(&quot;Enter new Team Name&quot;);</span>
+<span class="nc" id="L57">        Team team = new Team(newName);</span>
+<span class="nc" id="L58">        team.setId(teamId);</span>
+<span class="nc" id="L59">        teamService.updateTeam(team);</span>
+<span class="nc" id="L60">    }</span>
+
+    private static void removeTeam() {
+<span class="nc" id="L63">        long teamId = input.getNum(&quot;Enter Team ID to remove&quot;);</span>
+<span class="nc" id="L64">        Team team = new Team();</span>
+<span class="nc" id="L65">        team.setId(teamId);</span>
+<span class="nc" id="L66">        teamService.removeTeam(team);</span>
+<span class="nc" id="L67">    }</span>
+
+    private static String menu() {
+<span class="nc" id="L70">        return</span>
+                &quot;\t\t-- Team Menu --\n&quot; +
+                        &quot;\t1. Add Team\n&quot; +
+                        &quot;\t2. View Teams\n&quot; +
+                        &quot;\t3. Update Team\n&quot; +
+                        &quot;\t4. Remove Team\n&quot; +
+                        &quot;\t5. Exit\n&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
