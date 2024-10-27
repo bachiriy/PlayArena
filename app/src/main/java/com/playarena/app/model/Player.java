@@ -54,7 +54,7 @@ public class Player {
     }
     public void display(){
         System.out.println(
-                "Player - ID: " + id + " | Username: " + username   + " | Team: " + (team == null ? "No Team" : team.getName()) + "\n"
+                "\tPlayer - ID: " + id + " | Username: " + username   + " | Team: " + (team == null ? "No Team" : team.getName()) + "\n"
         );
     }
 }

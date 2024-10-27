@@ -46,12 +46,12 @@ public class Tournament {
 
     }
 
-    public Tournament(String title, Date startDate, Date endDate, int spectatorsCount, int estimatedDuration, int matchPauseTime, int ceremonyTime, Status status) {
+    public Tournament(String title, Date startDate, Date endDate, int spectatorsCount, int matchPauseTime, int ceremonyTime, Status status) {
         this.title = title;
         this.startDate = startDate;
         this.endDate = endDate;
         this.spectatorsCount = spectatorsCount;
-        this.estimatedDuration = estimatedDuration;
+        // this.estimatedDuration = estimatedDuration;
         this.matchPauseTime = matchPauseTime;
         this.ceremonyTime = ceremonyTime;
         this.status = status;
@@ -147,12 +147,13 @@ public class Tournament {
     }
 
     public void display(){
-        System.out.println("\n\t\tGame: " + game);
+        System.out.println("\n\tGame: " + (game != null ? game.getName() : "No Game"));
         System.out.println(
                 "\n\tTournament - ID: " + id + " | Title: " + title + " | Start: " + startDate + " | End: " + endDate + " | Estimated Duration: " + estimatedDuration + " | Match Pause Time: " + matchPauseTime + " | Ceremony Time: " + ceremonyTime + " | Status: " + status + "\n"
         );
-        if (teams != null){
+        if (teams != null || teams.size() != 0){
+            System.out.println("\n\tTeams ->  ");
             teams.forEach(Team::display);
-        }
+        } else System.out.println("\n\tTeams -> No Teams");
     }
 }

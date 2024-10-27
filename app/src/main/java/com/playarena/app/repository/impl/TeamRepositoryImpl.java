@@ -43,7 +43,7 @@ public class TeamRepositoryImpl implements Repository<Team> {
             Session session = sessionFactory.openSession();
             Team team = session.get(Team.class, id);
             session.close();
-            log.info("[+] team retrieved with id {}", id);
+            log.info("[+] Team retrieved with id {}", id);
             return Optional.ofNullable(team);
         } catch (Exception e) {
             log.error(e.getMessage().toUpperCase());

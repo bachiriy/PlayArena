@@ -43,7 +43,10 @@ public class GameRepositoryImpl implements Repository<Game> {
     public Optional<Game> get(Long id) {
         try (Session session = sessionFactory.openSession()) {
             Game game = session.get(Game.class, id);
-            log.info("[+] Game retrieved with id {}", id);
+            session.close();
+            if (game != null) {
+                log.info("[+] Game retrieved with id {}", id);
+            } else log.error("[-] Game with id not found {}", id);
             return Optional.ofNullable(game);
         } catch (Exception e) {
             log.error("[-] Failed retrieving game with id {}: {}", id, e.getMessage());

@@ -11,6 +11,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class TournamentView {
@@ -23,6 +24,7 @@ public class TournamentView {
 
         System.out.println(menu());
         int choice = input.getNum("Enter your choice");
+        input.cleanBuffer();
         switch (choice) {
             case 1:
                 addTournament(context);
@@ -37,6 +39,12 @@ public class TournamentView {
                 removeTournament();
                 break;
             case 5:
+                assignToTeam(context);
+                break;
+            case 6:
+                detachFromTeam(context);
+                break;
+            case 7:
                 log.info("Exiting tournament menu ...");
                 return;
             default:
@@ -59,24 +67,29 @@ public class TournamentView {
             } else log.warn("End date cannot be before start date.");
         }
         int spectatorsCount = input.getNum("Spectators Count");
-        int estimatedDuration = input.getNum("Estimated Duration (in minutes)");
+        // int estimatedDuration = input.getNum("Estimated Duration (in minutes)");
         int matchPauseTime = input.getNum("Match Pause Time (in minutes)");
         int ceremonyTime = input.getNum("Ceremony Time (in minutes)");
+        input.cleanBuffer();
         Status status =  input.getEnum("Status (SCHEDULED, IN_PROGRESS, COMPLETED, CANCELED)", Status.class);
 
-        Tournament tournament = new Tournament(title, startDate, endDate, spectatorsCount, estimatedDuration, matchPauseTime, ceremonyTime, status);
+        Tournament tournament = new Tournament(title, startDate, endDate, spectatorsCount, matchPauseTime, ceremonyTime, status);
         GameService gameService = (GameService) context.getBean("gameService");
         boolean assignToGame = input.getYesNo("Do you want to assign this tournament to and existing game? (Y/N: adding new game) : ");
         if (assignToGame) {
             gameService.getAllGames().forEach(Game::display);
-            long gameId = input.getNum("Game ID to passing to this tournament: ");
-            while (gameService.getGameById(gameId) == null) {
-                log.error("No game found with the ID {} try again. ", gameId);
-                gameId = input.getNum("Game ID to passing to this tournament: ");
+            long gameId = input.getNum("Game ID to assign to this tournament: ");
+            
+            while (true) {
+                Game foundGmae = gameService.getGameById(gameId);
+                if (foundGmae != null) {
+                    tournament.setGame(foundGmae);
+                    break;
+                } else {
+                    log.error("No game found with the ID {} try again. ", gameId);
+                    gameId = input.getNum("Try agin, Game ID to assign to this tournament: ");
+                }
             }
-            Game game = new Game();
-            game.setId(gameId);
-            tournament.setGame(game);
         } else {
             String name = input.getStr("Game Name");
             Difficulty difficulty = input.getEnum("Difficulty (EASY, MEDIUM, HARD)", Difficulty.class);
@@ -111,12 +124,12 @@ public class TournamentView {
                 } else log.warn("End date cannot be before start date.");
             }
             int spectatorsCount = input.getNum("Spectators Count");
-            int estimatedDuration = input.getNum("Estimated Duration (in minutes)");
+            // int estimatedDuration = input.getNum("Estimated Duration (in minutes)");
             int matchPauseTime = input.getNum("Match Pause Time (in minutes)");
             int ceremonyTime = input.getNum("Ceremony Time (in minutes)");
             Status status =  input.getEnum("Status (SCHEDULED, IN_PROGRESS, COMPLETED, CANCELED)", Status.class);
             tournament.setSpectatorsCount(spectatorsCount);
-            tournament.setEstimatedDuration(estimatedDuration);
+            // tournament.setEstimatedDuration(estimatedDuration);
             tournament.setMatchPauseTime(matchPauseTime);
             tournament.setCeremonyTime(ceremonyTime);
             tournament.setStatus(status);
@@ -131,6 +144,25 @@ public class TournamentView {
         log.info("[+] Tournament with ID {} removed successfully.", tournamentId);
     }
 
+    private static void assignToTeam(ApplicationContext context){
+        ArrayList<Long> teamIds = new ArrayList<>();
+        long tournamentId = input.getNum("Enter Tournament ID : ");
+        long firstTeamId = input.getNum("Enter Team ID to assign to the Tournament: ");
+        teamIds.add(firstTeamId);
+        input.cleanBuffer();
+        while (input.getYesNo("Add other Team to the Tournament? (Y/N) :")) {
+            long otherTeamId = input.getNum("Enter Team ID to assign to the Tournament: ");
+            teamIds.add(otherTeamId);
+            input.cleanBuffer();
+        }
+        tournamentService.assignToTeam(context, tournamentId, teamIds);
+    }
+    private static void detachFromTeam(ApplicationContext context){
+        long tournamentId = input.getNum("Enter Tournament ID : ");
+        long teamId = input.getNum("Enter Team ID to detach from this Tournament: ");
+        tournamentService.detachFromTeam(context, tournamentId, teamId);
+    }
+
     private static String menu() {
         return
                 "\t\t-- Tournament Menu --\n" +
@@ -138,6 +170,8 @@ public class TournamentView {
                         "\t2. View Tournaments\n" +
                         "\t3. Update Tournament\n" +
                         "\t4. Remove Tournament\n" +
-                        "\t5. Exit\n";
+                        "\t5. Assign new Teams to Tournament\n" +
+                        "\t6. Detach Tournament from team\n" +
+                        "\t7. Exit\n";
     }
 }
