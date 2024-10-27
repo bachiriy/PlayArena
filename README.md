@@ -1,4 +1,4 @@
-# PlayArena 
+![Screenshot from 2024-10-27 18-41-00](https://github.com/user-attachments/assets/7ee45f79-8ba9-4287-b629-f69b07281e02)# PlayArena 
 
 ## Project Overview
 
@@ -76,7 +76,8 @@ PROJECT_DIR="/cloned_location/PlayArena/app"
 ```bash
    firefox app/target/site/jacoco/index.html
 ``` 
- 
+ ![Screenshot from 2024-10-27 18-41-00](https://github.com/user-attachments/assets/fc2eef71-07ee-477c-b959-8bfa8ec49f91)
+
 ### Jira
 https://mohammedelbachiri945.atlassian.net/jira/software/projects/PLAYAR/boards/35
 
