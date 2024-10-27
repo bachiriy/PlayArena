@@ -1,4 +1,3 @@
-![Screenshot from 2024-10-27 18-41-00](https://github.com/user-attachments/assets/7ee45f79-8ba9-4287-b629-f69b07281e02)# PlayArena 
 
 ## Project Overview
 
