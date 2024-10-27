@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Game.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">playarena</a> &gt; <a href="index.source.html" class="el_package">com.playarena.app.model</a> &gt; <span class="el_source">Game.java</span></div><h1>Game.java</h1><pre class="source lang-java linenums">package com.playarena.app.model;
+
+import com.playarena.app.enums.Difficulty;
+
+import javax.persistence.*;
+
+@Entity
+@Table(name = &quot;games&quot;)
+public class Game {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    private Difficulty difficulty;
+
+    @Column(name = &quot;average_match_duration&quot;)
+    private int averageMatchDuration;
+
+    @OneToOne(mappedBy = &quot;game&quot;)
+    private Tournament tournament;
+
+<span class="nc" id="L25">    public Game(){</span>
+<span class="nc" id="L26">    }</span>
+
+<span class="nc" id="L28">    public Game(Long id, String name, Difficulty difficulty, int averageMatchDuration){</span>
+<span class="nc" id="L29">        this.id = id;</span>
+<span class="nc" id="L30">        this.name = name;</span>
+<span class="nc" id="L31">        this.difficulty = difficulty;</span>
+<span class="nc" id="L32">        this.averageMatchDuration = averageMatchDuration;</span>
+<span class="nc" id="L33">    }</span>
+
+<span class="nc" id="L35">    public Game(String name, Difficulty difficulty, int averageMatchDuration){</span>
+<span class="nc" id="L36">        this.name = name;</span>
+<span class="nc" id="L37">        this.difficulty = difficulty;</span>
+<span class="nc" id="L38">        this.averageMatchDuration = averageMatchDuration;</span>
+<span class="nc" id="L39">    }</span>
+
+    // Getters and setters
+    public Long getId() {
+<span class="nc" id="L43">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="nc" id="L47">        this.id = id;</span>
+<span class="nc" id="L48">    }</span>
+
+    public String getName() {
+<span class="nc" id="L51">        return name;</span>
+    }
+
+    public void setName(String name) {
+<span class="nc" id="L55">        this.name = name;</span>
+<span class="nc" id="L56">    }</span>
+
+    public Difficulty getDifficulty() {
+<span class="nc" id="L59">        return difficulty;</span>
+    }
+
+    public void setDifficulty(Difficulty difficulty) {
+<span class="nc" id="L63">        this.difficulty = difficulty;</span>
+<span class="nc" id="L64">    }</span>
+
+    public int getAverageMatchDuration() {
+<span class="nc" id="L67">        return averageMatchDuration;</span>
+    }
+
+    public void setAverageMatchDuration(int averageMatchDuration) {
+<span class="nc" id="L71">        this.averageMatchDuration = averageMatchDuration;</span>
+<span class="nc" id="L72">    }</span>
+
+    public void display(){
+<span class="nc" id="L75">        System.out.println(</span>
+<span class="nc" id="L76">                &quot;Game - ID: &quot; + id + &quot; | Name: &quot; + name + &quot; | Difficulty: &quot; + difficulty.toString() + &quot; | AverageMatchDuration: &quot; + averageMatchDuration + &quot;\n&quot;</span>
+        );
+<span class="nc bnc" id="L78" title="All 2 branches missed.">        if (tournament != null){</span>
+<span class="nc" id="L79">            tournament.display();</span>
+        }
+<span class="nc" id="L81">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

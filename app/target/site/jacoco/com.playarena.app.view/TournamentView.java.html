@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TournamentView.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">playarena</a> &gt; <a href="index.source.html" class="el_package">com.playarena.app.view</a> &gt; <span class="el_source">TournamentView.java</span></div><h1>TournamentView.java</h1><pre class="source lang-java linenums">package com.playarena.app.view;
+
+import com.playarena.app.enums.Difficulty;
+import com.playarena.app.enums.Status;
+import com.playarena.app.model.Game;
+import com.playarena.app.model.Tournament;
+import com.playarena.app.service.GameService;
+import com.playarena.app.service.impl.TournamentServiceImpl;
+import com.playarena.app.util.InputValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.context.ApplicationContext;
+
+import java.util.ArrayList;
+import java.util.Date;
+
+<span class="nc" id="L17">public class TournamentView {</span>
+<span class="nc" id="L18">    private static final Logger log = LoggerFactory.getLogger(TournamentView.class);</span>
+<span class="nc" id="L19">    private static InputValidator input = new InputValidator();</span>
+    private static TournamentServiceImpl tournamentService;
+
+    public static void display(ApplicationContext context) {
+<span class="nc" id="L23">        tournamentService = (TournamentServiceImpl) context.getBean(&quot;tournamentService&quot;);</span>
+
+<span class="nc" id="L25">        System.out.println(menu());</span>
+<span class="nc" id="L26">        int choice = input.getNum(&quot;Enter your choice&quot;);</span>
+<span class="nc" id="L27">        input.cleanBuffer();</span>
+<span class="nc bnc" id="L28" title="All 9 branches missed.">        switch (choice) {</span>
+            case 1:
+<span class="nc" id="L30">                addTournament(context);</span>
+<span class="nc" id="L31">                break;</span>
+            case 2:
+<span class="nc" id="L33">                tournamentService.getAllTournaments().forEach(Tournament::display);</span>
+<span class="nc" id="L34">                break;</span>
+            case 3:
+<span class="nc" id="L36">                updateTournament();</span>
+<span class="nc" id="L37">                break;</span>
+            case 4:
+<span class="nc" id="L39">                removeTournament();</span>
+<span class="nc" id="L40">                break;</span>
+            case 5:
+<span class="nc" id="L42">                assignToTeam(context);</span>
+<span class="nc" id="L43">                break;</span>
+                case 6:
+<span class="nc" id="L45">                detachFromTeam(context);</span>
+<span class="nc" id="L46">                break;</span>
+            case 7:
+<span class="nc" id="L48">                calculateEstimatedDuration();</span>
+<span class="nc" id="L49">                break;    </span>
+            case 8:
+<span class="nc" id="L51">                log.info(&quot;Exiting tournament menu ...&quot;);</span>
+<span class="nc" id="L52">                return;</span>
+            default:
+<span class="nc" id="L54">                log.error(&quot;[-] Invalid choice.&quot;);</span>
+<span class="nc" id="L55">                display(context);</span>
+                break;
+        }
+
+<span class="nc" id="L59">        display(context);</span>
+<span class="nc" id="L60">    }</span>
+
+    private static void addTournament(ApplicationContext context) {
+<span class="nc" id="L63">        String title = input.getStr(&quot;Tournament Title&quot;);</span>
+<span class="nc" id="L64">        Date startDate = input.getDate(&quot;Start Date (DD/MM/YYYY)&quot;, false);</span>
+<span class="nc" id="L65">        Date endDate = null;</span>
+        while (true){
+<span class="nc" id="L67">            endDate = input.getDate(&quot;End Date (DD/MM/YYYY)&quot;, false);</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">            if (endDate.after(startDate)) {</span>
+<span class="nc" id="L69">                break;</span>
+<span class="nc" id="L70">            } else log.warn(&quot;End date cannot be before start date.&quot;);</span>
+        }
+<span class="nc" id="L72">        int spectatorsCount = input.getNum(&quot;Spectators Count&quot;);</span>
+        // int estimatedDuration = input.getNum(&quot;Estimated Duration (in minutes)&quot;);
+<span class="nc" id="L74">        int matchPauseTime = input.getNum(&quot;Match Pause Time (in minutes)&quot;);</span>
+<span class="nc" id="L75">        int ceremonyTime = input.getNum(&quot;Ceremony Time (in minutes)&quot;);</span>
+<span class="nc" id="L76">        input.cleanBuffer();</span>
+<span class="nc" id="L77">        Status status =  input.getEnum(&quot;Status (SCHEDULED, IN_PROGRESS, COMPLETED, CANCELED)&quot;, Status.class);</span>
+
+<span class="nc" id="L79">        Tournament tournament = new Tournament(title, startDate, endDate, spectatorsCount, matchPauseTime, ceremonyTime, status);</span>
+<span class="nc" id="L80">        GameService gameService = (GameService) context.getBean(&quot;gameService&quot;);</span>
+<span class="nc" id="L81">        boolean assignToGame = input.getYesNo(&quot;Do you want to assign this tournament to and existing game? (Y/N: adding new game) : &quot;);</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">        if (assignToGame) {</span>
+<span class="nc" id="L83">            gameService.getAllGames().forEach(Game::display);</span>
+<span class="nc" id="L84">            long gameId = input.getNum(&quot;Game ID to assign to this tournament: &quot;);</span>
+            
+            while (true) {
+<span class="nc" id="L87">                Game foundGmae = gameService.getGameById(gameId);</span>
+<span class="nc bnc" id="L88" title="All 2 branches missed.">                if (foundGmae != null) {</span>
+<span class="nc" id="L89">                    tournament.setGame(foundGmae);</span>
+<span class="nc" id="L90">                    break;</span>
+                } else {
+<span class="nc" id="L92">                    log.error(&quot;No game found with the ID {} try again. &quot;, gameId);</span>
+<span class="nc" id="L93">                    gameId = input.getNum(&quot;Try agin, Game ID to assign to this tournament: &quot;);</span>
+                }
+<span class="nc" id="L95">            }</span>
+<span class="nc" id="L96">        } else {</span>
+<span class="nc" id="L97">            String name = input.getStr(&quot;Game Name&quot;);</span>
+<span class="nc" id="L98">            Difficulty difficulty = input.getEnum(&quot;Difficulty (EASY, MEDIUM, HARD)&quot;, Difficulty.class);</span>
+<span class="nc" id="L99">            int duration = input.getNum(&quot;Average Match Duration&quot;);</span>
+<span class="nc" id="L100">            Game newGame =  new Game(name, difficulty, duration);</span>
+<span class="nc" id="L101">            tournament.setGame(newGame);</span>
+        }
+<span class="nc" id="L103">        tournamentService.addTournament(tournament);</span>
+<span class="nc" id="L104">    }</span>
+
+    private static void updateTournament() {
+<span class="nc" id="L107">        long tournamentId = input.getNum(&quot;Enter Tournament ID to update&quot;);</span>
+<span class="nc" id="L108">        Tournament tournament = tournamentService.getTournamentById(tournamentId);</span>
+<span class="nc bnc" id="L109" title="All 2 branches missed.">        if (tournament == null) {</span>
+<span class="nc" id="L110">            log.error(&quot;[-] Tournament with ID {} does not exist.&quot;, tournamentId);</span>
+<span class="nc" id="L111">            return;</span>
+        }
+
+<span class="nc" id="L114">        String newTitle = input.getStrEvenEmpty(&quot;Enter New Tournament Title (leave empty for no change)&quot;);</span>
+<span class="nc bnc" id="L115" title="All 2 branches missed.">        if (!newTitle.isEmpty()) {</span>
+<span class="nc" id="L116">            tournament.setTitle(newTitle);</span>
+        }
+
+<span class="nc" id="L119">        boolean updateOtherProps = input.getYesNo(&quot;Do You Want To Update Other Properties Of This Tournament? (Y/N) :&quot;);</span>
+<span class="nc bnc" id="L120" title="All 2 branches missed.">        if (updateOtherProps) {</span>
+<span class="nc" id="L121">            Date startDate = input.getDate(&quot;Start Date (DD/MM/YYYY)&quot;, false);</span>
+<span class="nc" id="L122">            Date endDate = null;</span>
+            while (true){
+<span class="nc" id="L124">                endDate = input.getDate(&quot;End Date (DD/MM/YYYY)&quot;, false);</span>
+<span class="nc bnc" id="L125" title="All 2 branches missed.">                if (endDate.after(startDate)) {</span>
+<span class="nc" id="L126">                    break;</span>
+<span class="nc" id="L127">                } else log.warn(&quot;End date cannot be before start date.&quot;);</span>
+            }
+<span class="nc" id="L129">            int spectatorsCount = input.getNum(&quot;Spectators Count&quot;);</span>
+            // int estimatedDuration = input.getNum(&quot;Estimated Duration (in minutes)&quot;);
+<span class="nc" id="L131">            int matchPauseTime = input.getNum(&quot;Match Pause Time (in minutes)&quot;);</span>
+<span class="nc" id="L132">            int ceremonyTime = input.getNum(&quot;Ceremony Time (in minutes)&quot;);</span>
+<span class="nc" id="L133">            Status status =  input.getEnum(&quot;Status (SCHEDULED, IN_PROGRESS, COMPLETED, CANCELED)&quot;, Status.class);</span>
+<span class="nc" id="L134">            tournament.setSpectatorsCount(spectatorsCount);</span>
+            // tournament.setEstimatedDuration(estimatedDuration);
+<span class="nc" id="L136">            tournament.setMatchPauseTime(matchPauseTime);</span>
+<span class="nc" id="L137">            tournament.setCeremonyTime(ceremonyTime);</span>
+<span class="nc" id="L138">            tournament.setStatus(status);</span>
+        }
+<span class="nc" id="L140">        tournamentService.updateTournament(tournament);</span>
+<span class="nc" id="L141">        log.info(&quot;[+] Tournament with ID {} updated successfully.&quot;, tournamentId);</span>
+<span class="nc" id="L142">    }</span>
+
+    private static void removeTournament() {
+<span class="nc" id="L145">        long tournamentId = input.getNum(&quot;Enter Tournament ID to remove&quot;);</span>
+<span class="nc" id="L146">        tournamentService.removeTournament(tournamentId);</span>
+<span class="nc" id="L147">        log.info(&quot;[+] Tournament with ID {} removed successfully.&quot;, tournamentId);</span>
+<span class="nc" id="L148">    }</span>
+
+    private static void assignToTeam(ApplicationContext context){
+<span class="nc" id="L151">        ArrayList&lt;Long&gt; teamIds = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L152">        long tournamentId = input.getNum(&quot;Enter Tournament ID : &quot;);</span>
+<span class="nc" id="L153">        long firstTeamId = input.getNum(&quot;Enter Team ID to assign to the Tournament: &quot;);</span>
+<span class="nc" id="L154">        teamIds.add(firstTeamId);</span>
+<span class="nc" id="L155">        input.cleanBuffer();</span>
+<span class="nc bnc" id="L156" title="All 2 branches missed.">        while (input.getYesNo(&quot;Add other Team to the Tournament? (Y/N) :&quot;)) {</span>
+<span class="nc" id="L157">            long otherTeamId = input.getNum(&quot;Enter Team ID to assign to the Tournament: &quot;);</span>
+<span class="nc" id="L158">            teamIds.add(otherTeamId);</span>
+<span class="nc" id="L159">            input.cleanBuffer();</span>
+<span class="nc" id="L160">        }</span>
+<span class="nc" id="L161">        tournamentService.assignToTeam(context, tournamentId, teamIds);</span>
+<span class="nc" id="L162">    }</span>
+    private static void detachFromTeam(ApplicationContext context){
+<span class="nc" id="L164">        long tournamentId = input.getNum(&quot;Enter Tournament ID : &quot;);</span>
+<span class="nc" id="L165">        long teamId = input.getNum(&quot;Enter Team ID to detach from this Tournament: &quot;);</span>
+<span class="nc" id="L166">        tournamentService.detachFromTeam(context, tournamentId, teamId);</span>
+<span class="nc" id="L167">    }</span>
+
+    private static void calculateEstimatedDuration(){
+<span class="nc" id="L170">        long tournamentId = input.getNum(&quot;Enter tournament ID to calculate estimated duration : &quot;);</span>
+<span class="nc" id="L171">        tournamentService.getEstimatedTournamentDuration(tournamentId);</span>
+<span class="nc" id="L172">    }</span>
+
+    private static String menu() {
+<span class="nc" id="L175">        return</span>
+                &quot;\t\t-- Tournament Menu --\n&quot; +
+                        &quot;\t1. Add Tournament\n&quot; +
+                        &quot;\t2. View Tournaments\n&quot; +
+                        &quot;\t3. Update Tournament\n&quot; +
+                        &quot;\t4. Remove Tournament\n&quot; +
+                        &quot;\t5. Assign new Teams to Tournament\n&quot; +
+                        &quot;\t6. Detach Tournament from team\n&quot; +
+                        &quot;\t7. Calculate Estimated Duration of Tournament\n&quot; +
+                        &quot;\t8. Exit\n&quot;;
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

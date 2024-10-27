@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Tournament.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">playarena</a> &gt; <a href="index.source.html" class="el_package">com.playarena.app.model</a> &gt; <span class="el_source">Tournament.java</span></div><h1>Tournament.java</h1><pre class="source lang-java linenums">package com.playarena.app.model;
+
+import com.playarena.app.enums.Status;
+
+import javax.persistence.*;
+import java.util.Date;
+import java.util.List;
+import java.util.Set;
+
+import com.playarena.app.model.Game;
+import com.playarena.app.model.Team;
+
+@Entity
+@Table(name = &quot;tournaments&quot;)
+public class Tournament {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    private String title;
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = &quot;game_id&quot;, referencedColumnName = &quot;id&quot;)
+    private Game game;
+
+    @Column(name = &quot;start_date&quot;)
+    private Date startDate;
+
+    @Column(name = &quot;end_date&quot;)
+    private Date endDate;
+
+    @Column(name = &quot;spectators_count&quot;)
+    private int spectatorsCount;
+
+    @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
+    @JoinTable(
+            name = &quot;Tournament_Team&quot;,
+            joinColumns = { @JoinColumn(name = &quot;tournament_id&quot;) },
+            inverseJoinColumns = { @JoinColumn(name = &quot;team_id&quot;) }
+    )
+    private Set&lt;Team&gt; teams;
+
+    @Column(name = &quot;estimated_duration&quot;)
+    private int estimatedDuration;
+
+    @Column(name = &quot;match_pause_time&quot;)
+    private int matchPauseTime;
+
+    @Column(name = &quot;ceremony_time&quot;)
+    private int ceremonyTime;
+
+    @Enumerated(EnumType.STRING)
+    private Status status;
+
+<span class="nc" id="L55">    public Tournament(){</span>
+
+<span class="nc" id="L57">    }</span>
+
+<span class="nc" id="L59">    public Tournament(String title, Date startDate, Date endDate, int spectatorsCount, int matchPauseTime, int ceremonyTime, Status status) {</span>
+<span class="nc" id="L60">        this.title = title;</span>
+<span class="nc" id="L61">        this.startDate = startDate;</span>
+<span class="nc" id="L62">        this.endDate = endDate;</span>
+<span class="nc" id="L63">        this.spectatorsCount = spectatorsCount;</span>
+<span class="nc" id="L64">        this.matchPauseTime = matchPauseTime;</span>
+<span class="nc" id="L65">        this.ceremonyTime = ceremonyTime;</span>
+<span class="nc" id="L66">        this.status = status;</span>
+<span class="nc" id="L67">    }</span>
+
+    // Getters and setters
+    public Long getId() {
+<span class="nc" id="L71">        return id;</span>
+    }
+
+    public void setId(Long id) {
+<span class="nc" id="L75">        this.id = id;</span>
+<span class="nc" id="L76">    }</span>
+
+    public String getTitle() {
+<span class="nc" id="L79">        return title;</span>
+    }
+
+    public void setTitle(String title) {
+<span class="nc" id="L83">        this.title = title;</span>
+<span class="nc" id="L84">    }</span>
+
+    public Game getGame() {
+<span class="nc" id="L87">        return game;</span>
+    }
+
+    public void setGame(Game game) {
+<span class="nc" id="L91">        this.game = game;</span>
+<span class="nc" id="L92">    }</span>
+
+    public Date getStartDate() {
+<span class="nc" id="L95">        return startDate;</span>
+    }
+
+    public void setStartDate(Date startDate) {
+<span class="nc" id="L99">        this.startDate = startDate;</span>
+<span class="nc" id="L100">    }</span>
+
+    public Date getEndDate() {
+<span class="nc" id="L103">        return endDate;</span>
+    }
+
+    public void setEndDate(Date endDate) {
+<span class="nc" id="L107">        this.endDate = endDate;</span>
+<span class="nc" id="L108">    }</span>
+
+    public int getSpectatorsCount() {
+<span class="nc" id="L111">        return spectatorsCount;</span>
+    }
+
+    public void setSpectatorsCount(int spectatorsCount) {
+<span class="nc" id="L115">        this.spectatorsCount = spectatorsCount;</span>
+<span class="nc" id="L116">    }</span>
+
+    public Set&lt;Team&gt; getTeams() {
+<span class="nc" id="L119">        return teams;</span>
+    }
+
+    public void setTeams(Set&lt;Team&gt; teams) {
+<span class="nc" id="L123">        this.teams = teams;</span>
+<span class="nc" id="L124">    }</span>
+
+    public int getEstimatedDuration() {
+<span class="nc" id="L127">        return estimatedDuration;</span>
+    }
+
+    public void setEstimatedDuration(int estimatedDuration) {
+<span class="nc" id="L131">        this.estimatedDuration = estimatedDuration;</span>
+<span class="nc" id="L132">    }</span>
+
+    public int getMatchPauseTime() {
+<span class="nc" id="L135">        return matchPauseTime;</span>
+    }
+
+    public void setMatchPauseTime(int matchPauseTime) {
+<span class="nc" id="L139">        this.matchPauseTime = matchPauseTime;</span>
+<span class="nc" id="L140">    }</span>
+
+    public int getCeremonyTime() {
+<span class="nc" id="L143">        return ceremonyTime;</span>
+    }
+
+    public void setCeremonyTime(int ceremonyTime) {
+<span class="nc" id="L147">        this.ceremonyTime = ceremonyTime;</span>
+<span class="nc" id="L148">    }</span>
+
+    public Status getStatus() {
+<span class="nc" id="L151">        return status;</span>
+    }
+
+    public void setStatus(Status status) {
+<span class="nc" id="L155">        this.status = status;</span>
+<span class="nc" id="L156">    }</span>
+
+    public void display(){
+<span class="nc bnc" id="L159" title="All 2 branches missed.">        System.out.println(&quot;\n\tGame: &quot; + (game != null ? game.getName() : &quot;No Game&quot;));</span>
+<span class="nc bnc" id="L160" title="All 2 branches missed.">        System.out.println(</span>
+<span class="nc" id="L161">                &quot;\n\tTournament - ID: &quot; + id + &quot; | Title: &quot; + title + &quot; | Start: &quot; + startDate + &quot; | End: &quot; + endDate + &quot; | Estimated Duration: &quot; + (estimatedDuration != 0 ? estimatedDuration : &quot;not yet calculated&quot;) + &quot; | Match Pause Time: &quot; + matchPauseTime + &quot; | Ceremony Time: &quot; + ceremonyTime + &quot; | Status: &quot; + status + &quot;\n&quot;</span>
+        );
+<span class="nc bnc" id="L163" title="All 4 branches missed.">        if (teams != null || teams.size() != 0){</span>
+<span class="nc" id="L164">            System.out.println(&quot;\n\tTeams -&gt;  &quot;);</span>
+<span class="nc" id="L165">            teams.forEach(Team::display);</span>
+<span class="nc" id="L166">        } else System.out.println(&quot;\n\tTeams -&gt; No Teams&quot;);</span>
+<span class="nc" id="L167">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

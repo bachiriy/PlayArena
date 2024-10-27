@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Entry.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">playarena</a> &gt; <a href="index.source.html" class="el_package">com.playarena.app.view</a> &gt; <span class="el_source">Entry.java</span></div><h1>Entry.java</h1><pre class="source lang-java linenums">package com.playarena.app.view;
+
+import java.util.Scanner;
+
+import com.playarena.app.util.InputValidator;
+import org.springframework.context.ApplicationContext;
+
+public class Entry {
+    private ApplicationContext context;
+    private InputValidator input;
+
+<span class="nc" id="L12">     public Entry(ApplicationContext context){</span>
+<span class="nc" id="L13">         this.input = new InputValidator();</span>
+<span class="nc" id="L14">         this.context = context;</span>
+<span class="nc" id="L15">     }</span>
+
+     public void display(){
+<span class="nc" id="L18">         System.out.println(menu());</span>
+<span class="nc" id="L19">         int choice = input.getNum(&quot;Enter your choice: &quot;);</span>
+<span class="nc bnc" id="L20" title="All 6 branches missed.">         switch (choice){</span>
+             case 1:
+<span class="nc" id="L22">                 PlayerView.display(context);</span>
+<span class="nc" id="L23">                 display();</span>
+             case 2:
+<span class="nc" id="L25">                 TeamView.display(context);</span>
+<span class="nc" id="L26">                 display();</span>
+             case 3:
+<span class="nc" id="L28">                 GameView.display(context);</span>
+<span class="nc" id="L29">                 display();</span>
+             case 4:
+<span class="nc" id="L31">                 TournamentView.display(context);</span>
+<span class="nc" id="L32">                 display();</span>
+             case 5:
+<span class="nc" id="L34">                 break;</span>
+             default:
+<span class="nc" id="L36">                 System.out.println(&quot;Invalid choice&quot;);</span>
+<span class="nc" id="L37">                 display();</span>
+                 break;
+         }
+<span class="nc" id="L40">     }</span>
+    
+
+     private String menu(){
+<span class="nc" id="L44">         return </span>
+         &quot;\t\t-- Principal Menu --\n&quot;+
+                 &quot;\t1. Manage Players\n&quot;+
+                 &quot;\t2. Manage Teams\n&quot;+
+                 &quot;\t3. Manage Games\n&quot;+
+                 &quot;\t4. Manage Tournament\n&quot; +
+                 &quot;\t5. Exit\n&quot;;
+     }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
