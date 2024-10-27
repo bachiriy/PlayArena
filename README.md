@@ -71,7 +71,12 @@ PROJECT_DIR="/cloned_location/PlayArena/app"
    cd ~/.m2/repository/com/h2database/h2/1.4.200/
    java -cp h2-1.4.200.jar org.h2.tools.Server -tcp
 ```
-
+## See JaCoCo Report by opening `app/target/site/jacoco/index.html` in your browser.
+- example:
+```bash
+   firefox app/target/site/jacoco/index.html
+``` 
+ 
 ### Jira
 https://mohammedelbachiri945.atlassian.net/jira/software/projects/PLAYAR/boards/35
 
