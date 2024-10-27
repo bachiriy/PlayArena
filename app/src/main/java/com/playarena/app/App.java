@@ -10,8 +10,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 public class App {
     public static void main(String[] args) {
         ApplicationContext context = new ClassPathXmlApplicationContext("applicationContext.xml");
-//        PlayerService playerService = (PlayerService) context.getBean("playerService");
-//        TeamService teamService = (TeamService) context.getBean("teamService");
         Entry entry = new Entry(context);
         entry.display();
     }

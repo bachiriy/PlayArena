@@ -18,6 +18,7 @@ public class TeamView {
         while (true) {
             System.out.println(menu());
             int choice = input.getNum("Enter your choice");
+            input.cleanBuffer();
 
             switch (choice) {
                 case 1:
@@ -34,6 +35,12 @@ public class TeamView {
                     removeTeam();
                     break;
                 case 5:
+                    assignPlayerToTeam(context);
+                    break;
+                case 6:
+                    detachPlayerFromTeam(context);
+                    break;
+                case 7:
                     log.info("Exiting Team Menu.");
                     return;
                 default:
@@ -66,6 +73,17 @@ public class TeamView {
         teamService.removeTeam(team);
     }
 
+    private static void assignPlayerToTeam(ApplicationContext context){
+        long teamId = input.getNum("Enter team ID : ");
+        long playerId = input.getNum("Enter player ID : ");
+        teamService.addNewPlayerToTeam(context, teamId, playerId);
+    }
+
+    private static void detachPlayerFromTeam(ApplicationContext context){
+        long playerId = input.getNum("Enter player ID : ");
+        teamService.detachPlayerFromTeam(context, playerId);
+    }
+
     private static String menu() {
         return
                 "\t\t-- Team Menu --\n" +
@@ -73,6 +91,8 @@ public class TeamView {
                         "\t2. View Teams\n" +
                         "\t3. Update Team\n" +
                         "\t4. Remove Team\n" +
-                        "\t5. Exit\n";
+                        "\t5. Assign player to team\n" +
+                        "\t6 Detach player from team\n" +
+                        "\t7. Exit\n";
     }
 }

@@ -20,7 +20,7 @@ public class Team {
     @Column(nullable = false, unique = true)
     private String name;
 
-    @OneToMany(mappedBy = "team", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
+    @OneToMany(mappedBy = "team", fetch = FetchType.EAGER)
     @OnDelete(action= OnDeleteAction.CASCADE)
     private Set<Player> players;
 

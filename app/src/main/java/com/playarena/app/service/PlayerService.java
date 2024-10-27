@@ -29,10 +29,12 @@ public class PlayerService {
         return playerRepository.getAll();
     }
 
-    public void updatePlayer(Player player){
+    public void updatePlayer(Player player, boolean setNewTeam){
         Player foundPlayer = findById(player.getId());
         if (foundPlayer != null) {
-            player.setTeam(foundPlayer.getTeam());
+            if (!setNewTeam) {
+                player.setTeam(foundPlayer.getTeam());
+            }
             playerRepository.update(player);
         } else log.error("[-] Player not found");
     }

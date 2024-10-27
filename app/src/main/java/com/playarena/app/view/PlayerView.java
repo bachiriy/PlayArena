@@ -61,7 +61,7 @@ public class PlayerView {
         String playerNewName = input.getStr("Enter Player New Name");
         Player player = new Player(playerNewName);
         player.setId(playerId);
-        playerService.updatePlayer(player);
+        playerService.updatePlayer(player, false);
     }
 
 

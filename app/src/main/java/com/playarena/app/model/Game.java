@@ -74,5 +74,8 @@ public class Game {
         System.out.println(
                 "Game - ID: " + id + " | Name: " + name + " | Difficulty: " + difficulty.toString() + " | AverageMatchDuration: " + averageMatchDuration + "\n"
         );
+        if (tournament != null){
+            tournament.display();
+        }
     }
 }
