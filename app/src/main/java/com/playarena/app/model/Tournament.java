@@ -23,8 +23,13 @@ public class Tournament {
     @JoinColumn(name = "game_id", referencedColumnName = "id")
     private Game game;
 
+    @Column(name = "start_date")
     private Date startDate;
+
+    @Column(name = "end_date")
     private Date endDate;
+
+    @Column(name = "spectators_count")
     private int spectatorsCount;
 
     @ManyToMany(cascade = { CascadeType.ALL }, fetch = FetchType.EAGER)
@@ -35,8 +40,13 @@ public class Tournament {
     )
     private Set<Team> teams;
 
+    @Column(name = "estimated_duration")
     private int estimatedDuration;
+
+    @Column(name = "match_pause_time")
     private int matchPauseTime;
+
+    @Column(name = "ceremony_time")
     private int ceremonyTime;
 
     @Enumerated(EnumType.STRING)
@@ -51,7 +61,6 @@ public class Tournament {
         this.startDate = startDate;
         this.endDate = endDate;
         this.spectatorsCount = spectatorsCount;
-        // this.estimatedDuration = estimatedDuration;
         this.matchPauseTime = matchPauseTime;
         this.ceremonyTime = ceremonyTime;
         this.status = status;
@@ -149,7 +158,7 @@ public class Tournament {
     public void display(){
         System.out.println("\n\tGame: " + (game != null ? game.getName() : "No Game"));
         System.out.println(
-                "\n\tTournament - ID: " + id + " | Title: " + title + " | Start: " + startDate + " | End: " + endDate + " | Estimated Duration: " + estimatedDuration + " | Match Pause Time: " + matchPauseTime + " | Ceremony Time: " + ceremonyTime + " | Status: " + status + "\n"
+                "\n\tTournament - ID: " + id + " | Title: " + title + " | Start: " + startDate + " | End: " + endDate + " | Estimated Duration: " + (estimatedDuration != 0 ? estimatedDuration : "not yet calculated") + " | Match Pause Time: " + matchPauseTime + " | Ceremony Time: " + ceremonyTime + " | Status: " + status + "\n"
         );
         if (teams != null || teams.size() != 0){
             System.out.println("\n\tTeams ->  ");

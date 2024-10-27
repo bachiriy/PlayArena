@@ -1,5 +1,6 @@
 package com.playarena.app.service.impl;
 
+import com.playarena.app.dao.TournamentDao;
 import com.playarena.app.model.Team;
 import com.playarena.app.model.Tournament;
 import com.playarena.app.repository.Repository;
@@ -16,13 +17,24 @@ import java.util.Set;
 public class TournamentServiceImpl implements TournamentService {
     private final Logger log = LoggerFactory.getLogger(TournamentServiceImpl.class);
     private final Repository<Tournament> tournamentRepository;
+    private TournamentDao tournamentDao;
 
     public TournamentServiceImpl(final Repository<Tournament> tournamentRepository) {
         this.tournamentRepository = tournamentRepository;
     }
-    public int getEstimatedTournamentDuration(){
-        return 1;
+    public void setTournamentDao(TournamentDao tournamentDao){
+        this.tournamentDao = tournamentDao;
     }
+
+
+    public void getEstimatedTournamentDuration(long tournamentId){
+        Tournament tournamentFound = getTournamentById(tournamentId);
+        if (tournamentFound != null) {
+            int estimatedDuration = tournamentDao.calculateEstimatedTournamentDuration(tournamentFound);
+            log.info("[+] Estimated Duration for this Tournament is `{}`.", estimatedDuration);
+        } else log.error("[+] No tournament found with id {}", tournamentId);
+    }
+
 
     public void addTournament(Tournament tournament) {
         tournamentRepository.add(tournament);

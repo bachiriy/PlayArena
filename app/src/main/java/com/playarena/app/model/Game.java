@@ -16,6 +16,7 @@ public class Game {
     @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
+    @Column(name = "average_match_duration")
     private int averageMatchDuration;
 
     @OneToOne(mappedBy = "game")

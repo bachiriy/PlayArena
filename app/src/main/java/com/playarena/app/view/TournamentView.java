@@ -41,10 +41,13 @@ public class TournamentView {
             case 5:
                 assignToTeam(context);
                 break;
-            case 6:
+                case 6:
                 detachFromTeam(context);
                 break;
             case 7:
+                calculateEstimatedDuration();
+                break;    
+            case 8:
                 log.info("Exiting tournament menu ...");
                 return;
             default:
@@ -163,6 +166,11 @@ public class TournamentView {
         tournamentService.detachFromTeam(context, tournamentId, teamId);
     }
 
+    private static void calculateEstimatedDuration(){
+        long tournamentId = input.getNum("Enter tournament ID to calculate estimated duration : ");
+        tournamentService.getEstimatedTournamentDuration(tournamentId);
+    }
+
     private static String menu() {
         return
                 "\t\t-- Tournament Menu --\n" +
@@ -172,6 +180,7 @@ public class TournamentView {
                         "\t4. Remove Tournament\n" +
                         "\t5. Assign new Teams to Tournament\n" +
                         "\t6. Detach Tournament from team\n" +
-                        "\t7. Exit\n";
+                        "\t7. Calculate Estimated Duration of Tournament\n" +
+                        "\t8. Exit\n";
     }
 }

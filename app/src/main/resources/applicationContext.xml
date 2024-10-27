@@ -22,6 +22,14 @@
         <constructor-arg ref="sessionFactory"/>
     </bean>
 
+    <!-- calculation -->
+    <bean id="basicCalculation" class="com.playarena.app.dao.impl.TournamentDaoImpl">
+        <constructor-arg ref="tournamentRepository"/>
+    </bean>
+    <bean id="advancedCalculation" class="com.playarena.app.dao.impl.TournamentDaoExtension">
+        <constructor-arg ref="tournamentRepository"/>
+    </bean>
+    <!--  -->
 
     <!-- services-->
     <bean id="playerService" class="com.playarena.app.service.PlayerService">
@@ -35,5 +43,7 @@
     </bean>
     <bean id="tournamentService" class="com.playarena.app.service.impl.TournamentServiceImpl">
         <constructor-arg ref="tournamentRepository"/>
+        <property name="tournamentDao" ref="advancedCalculation"/> <!-- change between basicCalculation/advancedCalculation -->
     </bean>
+
 </beans>
