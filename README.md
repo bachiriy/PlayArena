@@ -1,7 +1,7 @@
-
+# PlayArena
 ## Project Overview
 
-This project is a **Java application** for managing video game tournaments. It implements a platform to organize and track various gaming events, handling the registration and management of players, teams, and tournaments. The project was developed to practice the fundamental concepts of **Spring Core** and follows a layered architecture.
+PlayArena is a **Java application** for managing video game tournaments. It implements a platform to organize and track various gaming events, handling the registration and management of players, teams, and tournaments. The project was developed to practice the fundamental concepts of **Spring Core** and follows a layered architecture.
 
 ### Key Features
 
